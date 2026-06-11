@@ -23,17 +23,7 @@
         </header>
 
         <p class="box">Rate eine Zahl von 1 bis 100!</p>
-        <p class="box">Du hast fünf Versuche.</p>
-
-        <!--       <p class="box">In <span id="entfernung"></span>m Entfernung schläft ein Monster!</p> -->
-
-<!--         <script>
-          var Zufallszahl = Math.random() * 100 + 1;
-          Zufallszahl = Math.round(Zufallszahl);
-          console.log(Zufallszahl);
-
-          /*         document.getElementById("entfernung").innerHTML = entfernungZumMonster; */
-        </script> -->
+        <p class="box" id="versuche_text">Du hast fünf Versuche.</p>
 
         <main class="box">
           <!-- eingabefenster -->
@@ -57,18 +47,36 @@
           </dialog>
           <button id="oeffnenBtn">Raten</button>
           <button id="restartBtn" style="display: none">Neustart</button>
+          <figure>
+            <img
+              id="smileyFroh"
+              style="display: none"
+              src="thumbs-up.svg"
+              alt="Smiley mit Thumbs-Up."
+            />
+            <figcaption id="smileyFroh_caption" style="display: none">
+              Image by
+              <a
+                href="https://pixabay.com/users/blendertimer-9538909/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7648171"
+                >Daniel Roberts</a
+              >
+              from
+              <a
+                href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7648171"
+                >Pixabay</a
+              >
+            </figcaption>
+          </figure>
+          <figure>
           <img
-            id="smileyFroh"
-            style="display: none"
-            src="thumbs-up.svg"
-            alt="Smiley mit Thumbs-Up."
-          />
-          <img
-            id="smileyTraurig"
+            id="smileyTraurig_caption"
             style="display: none"
             src="traurig.svg"
             alt="Smiley mit Thumbs-Up."
           />
+          <figcaption id="smileyTraurig" style="display: none">Bild von <a href="https://pixabay.com/de/users/inspire-studio-22128832/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7027704">J S</a> auf <a href="https://pixabay.com/de//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=7027704">Pixabay</a></figcaption>
+          </figure>
+
           <p id="ausgabeText" class="output"></p>
 
           <div class="link">
@@ -94,7 +102,9 @@
             const ausgabe = document.getElementById("ausgabeText");
             const smileyFroh = document.getElementById("smileyFroh");
             const smileyTraurig = document.getElementById("smileyTraurig");
-
+            const smileyFroh_caption = document.getElementById("smileyFroh_caption");
+            const smileyTraurig_caption = document.getElementById("smileyTraurig_caption");
+            const versuche_text = document.getElementById("versuche_text");
             let versuche = 5;
 
             let Zufallszahl;
@@ -136,14 +146,18 @@
                   alert("Richtig geraten!");
                   restartBtn.style.display = "inline-block";
                   smileyFroh.style.display = "inline-block";
+                  smileyFroh_caption.style.display = "inline-block";
                   oeffnenBtn.disabled = true;
+                  versuche_text.style.display = "none";
                   return;
                 } else if (userEingabe < Zufallszahl) {
+                  versuche_text.style.display = "none";
                   alert("Die gesuchte Zahl ist größer.");
                   ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p>
                                      <p>Die gesuchte Zahl ist größer<p>
                                      <p>Verbleibende Versuche: ${versuche}</p>`;
                 } else if (userEingabe > Zufallszahl) {
+                  versuche_text.style.display = "none";
                   alert("Die gesuchte Zahl ist kleiner.");
                   ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p>
                                      <p>Die gesuchte Zahl ist kleiner</p>
@@ -158,6 +172,8 @@
                   oeffnenBtn.disabled = true;
                   restartBtn.style.display = "inline-block";
                   smileyTraurig.style.display = "inline-block";
+                  smileyTraurig_caption.style.display = "inline-block"
+                  versuche_text.style.display = "none";
                 }
               } else {
                 ausgabe.textContent = "Die Eingabe wurde abgebrochen.";
@@ -178,7 +194,10 @@
               restartBtn.style.display = "none";
               smileyTraurig.style.display = "none";
               smileyFroh.style.display = "none";
+              smileyTraurig_caption.style.display = "none";
+              smileyFroh_caption.style.display = "none";
               inputFeld.value = "";
+              versuche_text.style.display = "inline-block";
             });
           </script>
         </main>
