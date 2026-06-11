@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zahlenraten</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rye&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <!-- beginn body -->
+
+  <body>
+    <div class="outer">
+    <div class="site">
+      <header class="box">
+        <p class="title">Zahlenraten</p>
+      </header>
+
+      <p class="box">Rate eine Zahl von 1 bis 100!</p>
+      <p class="box">Du hast drei Versuche.</p>
+
+      <!--       <p class="box">In <span id="entfernung"></span>m Entfernung schläft ein Monster!</p> -->
+
+      <script>
+        var Zufallszahl = Math.random() * 100 + 1;
+        Zufallszahl = Math.round(Zufallszahl);
+        console.log(Zufallszahl);
+
+        /*         document.getElementById("entfernung").innerHTML = entfernungZumMonster; */
+      </script>
+
+      <main class="box">
+        <!-- eingabefenster -->
+        <dialog id="meinePromptBox">
+          <form method="dialog" id="meinFormular" autocomplete="off">
+            <p>Bitte gib' eine Zahl zwischen 1 und 100 ein:</p>
+            <input
+              type="number"
+              id="nutzerEingabe"
+              placeholder="Zahl zwischen 1 und 100"
+              min="1"
+              max="100"
+              autocomplete="off"
+              required
+            />
+            <div class="button-gruppe">
+              <button type="button" id="btnAbbrechen">Abbrechen</button>
+              <button type="submit" value="default" id="btnOk">OK</button>
+            </div>
+          </form>
+        </dialog>
+        <button id="oeffnenBtn">Raten</button>
+        <button id="restartBtn" style="display: none">Neustart</button>
+        <p id="ausgabeText" class="output"></p>
+
+        <div class="link">
+        Hintergrund Illustration:
+            <a
+              href="https://pixabay.com/de/users/geralt-9301/"
+              target="_blank"
+              >geralt
+            </a>
+            | Quelle:
+            <a
+              href="https://pixabay.com/de/illustrations/hintergrund-zahlen-zahlen-z%C3%A4hlen-5594879/"
+              target="_blank"
+              >pixabay</a
+            >
+        </div>
+
+
+
+        <script>
+          const restartBtn = document.getElementById("restartBtn");
+          const formular = document.getElementById("meinFormular");
+          const dialog = document.getElementById("meinePromptBox");
+          const oeffnenBtn = document.getElementById("oeffnenBtn");
+          const btnAbbrechen = document.getElementById("btnAbbrechen");
+          const inputFeld = document.getElementById("nutzerEingabe");
+          const ausgabe = document.getElementById("ausgabeText");
+
+          let versuche = 3;
+
+          btnAbbrechen.addEventListener("click", () => {
+            dialog.close("cancel");
+          });
+
+          inputFeld.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+              event.preventDefault(); // Verhindert unbeabsichtigtes Verhalten
+              // Formular absenden
+              formular.querySelector("#btnOk").click();
+            }
+          });
+
+          // Dialog öffnen
+          oeffnenBtn.addEventListener("click", () => {
+            dialog.showModal();
+          });
+
+          // Eingabe verarbeiten, wenn auf OK geklickt wird
+          dialog.addEventListener("close", () => {
+            if (dialog.returnValue === "default") {
+              versuche--;
+              console.log(versuche);
+
+              var userEingabe = inputFeld.value;
+              console.log(userEingabe);
+
+              if (userEingabe == Zufallszahl) {
+                alert("Richtig geraten!");
+                oeffnenBtn.disabled = true;
+                restartBtn.style.display = "inline-block";
+                return;
+              } else if (userEingabe < Zufallszahl) {
+                ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p><p>Die gesuchte Zahl ist größer<p>`;
+              } else if (userEingabe > Zufallszahl) {
+                alert("Die gesuchte Zahl ist kleiner.");
+                ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p><p>Die gesuchte Zahl ist kleiner</p>`;
+              }
+
+
+              if (versuche <= 0) {
+                alert("Leider verloren!");
+                ausgabe.innerHTML += "<br><b>Game Over! :(</b>";
+
+                oeffnenBtn.disabled = true;
+                restartBtn.style.display = "inline-block";
+              }
+            } else {
+              ausgabe.textContent = "Die Eingabe wurde abgebrochen.";
+            }
+
+            // Felder leeren
+            userEingabe = "";
+          });
+
+          restartBtn.addEventListener("click", () => {
+            versuche = 3;
+
+            ausgabe.innerHTML =
+              "Neues Spiel gestartet. Du hast wieder 3 Versuche.";
+
+            oeffnenBtn.disabled = false;
+            restartBtn.style.display = "none";
+
+            userEingabe = "";
+          });
+        </script>
+      </main>
+    </div>
+
+
+    </div>
+        <footer>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Website made by 지기 👽 in 2026
+    </footer>
+  </body>
+</html>
