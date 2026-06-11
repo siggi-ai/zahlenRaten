@@ -17,53 +17,63 @@
 
   <body>
     <div class="outer">
-    <div class="site">
-      <header class="box">
-        <p class="title">Zahlenraten</p>
-      </header>
+      <div class="site">
+        <header class="box">
+          <p class="title">Zahlenraten</p>
+        </header>
 
-      <p class="box">Rate eine Zahl von 1 bis 100!</p>
-      <p class="box">Du hast drei Versuche.</p>
+        <p class="box">Rate eine Zahl von 1 bis 100!</p>
+        <p class="box">Du hast fünf Versuche.</p>
 
-      <!--       <p class="box">In <span id="entfernung"></span>m Entfernung schläft ein Monster!</p> -->
+        <!--       <p class="box">In <span id="entfernung"></span>m Entfernung schläft ein Monster!</p> -->
 
-      <script>
-        var Zufallszahl = Math.random() * 100 + 1;
-        Zufallszahl = Math.round(Zufallszahl);
-        console.log(Zufallszahl);
+<!--         <script>
+          var Zufallszahl = Math.random() * 100 + 1;
+          Zufallszahl = Math.round(Zufallszahl);
+          console.log(Zufallszahl);
 
-        /*         document.getElementById("entfernung").innerHTML = entfernungZumMonster; */
-      </script>
+          /*         document.getElementById("entfernung").innerHTML = entfernungZumMonster; */
+        </script> -->
 
-      <main class="box">
-        <!-- eingabefenster -->
-        <dialog id="meinePromptBox">
-          <form method="dialog" id="meinFormular" autocomplete="off">
-            <p>Bitte gib' eine Zahl zwischen 1 und 100 ein:</p>
-            <input
-              type="number"
-              id="nutzerEingabe"
-              placeholder="Zahl zwischen 1 und 100"
-              min="1"
-              max="100"
-              autocomplete="off"
-              required
-            />
-            <div class="button-gruppe">
-              <button type="button" id="btnAbbrechen">Abbrechen</button>
-              <button type="submit" value="default" id="btnOk">OK</button>
-            </div>
-          </form>
-        </dialog>
-        <button id="oeffnenBtn">Raten</button>
-        <button id="restartBtn" style="display: none">Neustart</button>
-        <p id="ausgabeText" class="output"></p>
+        <main class="box">
+          <!-- eingabefenster -->
+          <dialog id="meinePromptBox">
+            <form method="dialog" id="meinFormular" autocomplete="off">
+              <p>Bitte gib' eine Zahl zwischen 1 und 100 ein:</p>
+              <input
+                type="number"
+                id="nutzerEingabe"
+                placeholder="Zahl zwischen 1 und 100"
+                min="1"
+                max="100"
+                autocomplete="off"
+                required
+              />
+              <div class="button-gruppe">
+                <button type="button" id="btnAbbrechen">Abbrechen</button>
+                <button type="submit" value="default" id="btnOk">OK</button>
+              </div>
+            </form>
+          </dialog>
+          <button id="oeffnenBtn">Raten</button>
+          <button id="restartBtn" style="display: none">Neustart</button>
+          <img
+            id="smileyFroh"
+            style="display: none"
+            src="thumbs-up.svg"
+            alt="Smiley mit Thumbs-Up."
+          />
+          <img
+            id="smileyTraurig"
+            style="display: none"
+            src="traurig.svg"
+            alt="Smiley mit Thumbs-Up."
+          />
+          <p id="ausgabeText" class="output"></p>
 
-        <div class="link">
-        Hintergrund Illustration:
-            <a
-              href="https://pixabay.com/de/users/geralt-9301/"
-              target="_blank"
+          <div class="link">
+            Hintergrund Illustration:
+            <a href="https://pixabay.com/de/users/geralt-9301/" target="_blank"
               >geralt
             </a>
             | Quelle:
@@ -72,93 +82,109 @@
               target="_blank"
               >pixabay</a
             >
-        </div>
+          </div>
 
+          <script>
+            const restartBtn = document.getElementById("restartBtn");
+            const formular = document.getElementById("meinFormular");
+            const dialog = document.getElementById("meinePromptBox");
+            const oeffnenBtn = document.getElementById("oeffnenBtn");
+            const btnAbbrechen = document.getElementById("btnAbbrechen");
+            const inputFeld = document.getElementById("nutzerEingabe");
+            const ausgabe = document.getElementById("ausgabeText");
+            const smileyFroh = document.getElementById("smileyFroh");
+            const smileyTraurig = document.getElementById("smileyTraurig");
 
+            let versuche = 5;
 
-        <script>
-          const restartBtn = document.getElementById("restartBtn");
-          const formular = document.getElementById("meinFormular");
-          const dialog = document.getElementById("meinePromptBox");
-          const oeffnenBtn = document.getElementById("oeffnenBtn");
-          const btnAbbrechen = document.getElementById("btnAbbrechen");
-          const inputFeld = document.getElementById("nutzerEingabe");
-          const ausgabe = document.getElementById("ausgabeText");
+            let Zufallszahl;
 
-          let versuche = 3;
-
-          btnAbbrechen.addEventListener("click", () => {
-            dialog.close("cancel");
-          });
-
-          inputFeld.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-              event.preventDefault(); // Verhindert unbeabsichtigtes Verhalten
-              // Formular absenden
-              formular.querySelector("#btnOk").click();
-            }
-          });
-
-          // Dialog öffnen
-          oeffnenBtn.addEventListener("click", () => {
-            dialog.showModal();
-          });
-
-          // Eingabe verarbeiten, wenn auf OK geklickt wird
-          dialog.addEventListener("close", () => {
-            if (dialog.returnValue === "default") {
-              versuche--;
-              console.log(versuche);
-
-              var userEingabe = inputFeld.value;
-              console.log(userEingabe);
-
-              if (userEingabe == Zufallszahl) {
-                alert("Richtig geraten!");
-                oeffnenBtn.disabled = true;
-                restartBtn.style.display = "inline-block";
-                return;
-              } else if (userEingabe < Zufallszahl) {
-                ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p><p>Die gesuchte Zahl ist größer<p>`;
-              } else if (userEingabe > Zufallszahl) {
-                alert("Die gesuchte Zahl ist kleiner.");
-                ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p><p>Die gesuchte Zahl ist kleiner</p>`;
-              }
-
-
-              if (versuche <= 0) {
-                alert("Leider verloren!");
-                ausgabe.innerHTML += "<br><b>Game Over! :(</b>";
-
-                oeffnenBtn.disabled = true;
-                restartBtn.style.display = "inline-block";
-              }
-            } else {
-              ausgabe.textContent = "Die Eingabe wurde abgebrochen.";
+            function neueZufallszahl() {
+              Zufallszahl = Math.floor(Math.random() * 100) + 1;
+              console.log(Zufallszahl); // zum Testen
             }
 
-            // Felder leeren
-            userEingabe = "";
-          });
+            neueZufallszahl();
 
-          restartBtn.addEventListener("click", () => {
-            versuche = 3;
+            btnAbbrechen.addEventListener("click", () => {
+              dialog.close("cancel");
+            });
 
-            ausgabe.innerHTML =
-              "Neues Spiel gestartet. Du hast wieder 3 Versuche.";
+            inputFeld.addEventListener("keydown", function (event) {
+              if (event.key === "Enter") {
+                event.preventDefault(); // Verhindert unbeabsichtigtes Verhalten
+                // Formular absenden
+                formular.querySelector("#btnOk").click();
+              }
+            });
 
-            oeffnenBtn.disabled = false;
-            restartBtn.style.display = "none";
+            // Dialog öffnen
+            oeffnenBtn.addEventListener("click", () => {
+              dialog.showModal();
+            });
 
-            userEingabe = "";
-          });
-        </script>
-      </main>
+            // Eingabe verarbeiten, wenn auf OK geklickt wird
+            dialog.addEventListener("close", () => {
+              if (dialog.returnValue === "default") {
+                versuche--;
+                console.log(versuche);
+
+                var userEingabe = inputFeld.value;
+                console.log(userEingabe);
+
+                if (userEingabe == Zufallszahl) {
+                  alert("Richtig geraten!");
+                  restartBtn.style.display = "inline-block";
+                  smileyFroh.style.display = "inline-block";
+                  oeffnenBtn.disabled = true;
+                  return;
+                } else if (userEingabe < Zufallszahl) {
+                  alert("Die gesuchte Zahl ist größer.");
+                  ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p>
+                                     <p>Die gesuchte Zahl ist größer<p>
+                                     <p>Verbleibende Versuche: ${versuche}</p>`;
+                } else if (userEingabe > Zufallszahl) {
+                  alert("Die gesuchte Zahl ist kleiner.");
+                  ausgabe.innerHTML = `<p>Dein Tipp: ${userEingabe}</p>
+                                     <p>Die gesuchte Zahl ist kleiner</p>
+                                     <p>Verbleibende Versuche: ${versuche}</p>`;
+                }
+
+                if (versuche <= 0) {
+                  alert("Leider verloren!");
+                  ausgabe.innerHTML += "<br><b>Game Over! :(</b>";
+                  ausgabe.innerHTML = `<p>Gesuchte Zahl: ${Zufallszahl}</p>`;
+
+                  oeffnenBtn.disabled = true;
+                  restartBtn.style.display = "inline-block";
+                  smileyTraurig.style.display = "inline-block";
+                }
+              } else {
+                ausgabe.textContent = "Die Eingabe wurde abgebrochen.";
+              }
+
+              // Felder leeren
+              inputFeld.value = "";
+            });
+
+            restartBtn.addEventListener("click", () => {
+              neueZufallszahl();
+              versuche = 5;
+
+              ausgabe.innerHTML =
+                "Neues Spiel gestartet. Du hast wieder 5 Versuche.";
+
+              oeffnenBtn.disabled = false;
+              restartBtn.style.display = "none";
+              smileyTraurig.style.display = "none";
+              smileyFroh.style.display = "none";
+              inputFeld.value = "";
+            });
+          </script>
+        </main>
+      </div>
     </div>
-
-
-    </div>
-        <footer>
+    <footer>
       &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Website made by 지기 👽 in 2026
     </footer>
   </body>
